@@ -2,7 +2,7 @@ import numpy as np
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
 
-def fitting_and_plot(
+def fit_and_plot(
         model,
         x: np.array,
         y: np.array,
