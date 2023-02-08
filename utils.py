@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
+from collections.abc import Callable, Sequence
 
 def fit_and_plot(
         model,
@@ -109,7 +110,18 @@ def fit_and_plot(
 
     return pars, cov
 
-def montecarlo_estimator(f, xs, sigma, rollout):
+def montecarlo_estimator(f: Callable, xs: Sequence, sigma: Sequence, rollout: int) -> np.array:
+    """_summary_
+
+    Args:
+        f (Callable): takes in a sequence of np.array of the same shape and return y
+        xs (Sequence): an Sequence containing input np.array
+        sigma (Sequence): an Sequence containing input uncertainty np.array
+        rollout (int): how many times of random trials wanted
+
+    Returns:
+        std (np.array): uncertainties of each y
+    """
     stats = []
     for i in range(rollout):
         stats.append(
