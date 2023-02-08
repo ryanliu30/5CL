@@ -5,9 +5,10 @@
 
 </div>
 
-##Introduction
+## Introduction
+
 This module is developed to speed up the process of data analysis of Berkeley Physics 5 series lab. To import the utilities, go into the utils.py file and directly import the things needed.
-##Explanation
+## Explanation
 The module consists of two components, a Monte Carlo uncertainty estimator and a parameter regressor. 
 - *Monte Carlo Uncertainty Estimator*: to estimate the uncertainty of a complicated derived quantity, it is possible to calculate tedious partial derivatives. However, we can adopt Monte Carlo methods to estimate the uncertainty. Given $y=f(x_1, x_2, \dots, x_n)$ where each of the $x_i$ is independent measurement, we are interested in the variance $\sigma_y =\sqrt{\text{Var}_{x_i~\mathcal N(x_i, \sigma_i)}\left[f(x_1, x_2, ..., x_n)\right]}$. Assuming $f(x_1, x_2, \dots, x_n)$ is smooth enough and $\sigma_i$ is small enough, we can derive an explicit error propagation formula $\sigma_y=\sqrt{\sum_{i=1}^n\left(\frac{\partial f}{\partial x_i}\sigma_i\right)^2}$. However, as a more direct method, we can use Monte Carlo estimation of the quantity, namely, $\sigma_y=\sqrt{\sum_{x_i\sim\mathcal N(\bar x_i, \sigma_i)}^N\frac{\left(f(x_1, x_2, \dots, x_n) - f(\bar x_1, \bar x_2, \dots, \bar x_n)\right)^2}{N}}$.  The method is implemented by ```montecarlo_estimator```.
 
