@@ -76,12 +76,12 @@ def fit_and_plot(
         ax1.legend(
             [line1, line2, line3],
             ["data points", "best-fit curve", "theoretical prediction"],
-            title = "Model: " + fitting_equation + "\n  " + r"$\tilde\chi^2$" + f": {Chi_squared:.2f}")
+            title = "Model: " + fitting_equation + "\n" + r"$\chi^2$ per ddof" + f": {Chi_squared:.2f}")
     else:
         ax1.legend(
             [line1, line2],
             ["data points", "best-fit curve"],
-            title = "Model: " + fitting_equation + "\n  " + r"$\tilde\chi^2$"+f":  {Chi_squared:.2f}"
+            title = "Model: " + fitting_equation + "\n" + r"$\chi^2$ per ddof"+f":  {Chi_squared:.2f}"
             )
 
     
