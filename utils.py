@@ -38,7 +38,7 @@ def fit_and_plot(
         save_dir (str, optional): directory to save your plot
         x_logscale (bool, optional): use log scale for x axis. Defaults to False.
         y_logscale (bool, optional): use log scale for y axis. Defaults to False.
-    Return:
+    Returns:
         pars (np.array): best fit parameters
         cov (np.array): covariance of fitting
     """
