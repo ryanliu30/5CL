@@ -42,7 +42,7 @@ montecarlo_estimator
         f (Callable): takes in a sequence of np.array of the same shape and return y
         xs (Sequence): an Sequence containing input np.array
         sigma (Sequence): an Sequence containing input uncertainty np.array
-        rollout (int): how many times of random trials wanted
+        n_samples (int): how many times of random trials wanted
 
     Returns:
         std (np.array): uncertainties of each y

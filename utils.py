@@ -97,7 +97,7 @@ def fit_and_plot(
     ax1.set_ylabel(ylabel)
 
     if residual_title != None:
-        line5 = ax2.scatter(x, (model.forward(x, *pars.tolist()) - y)/(equi_uncertainty), s=20)
+        line5 = ax2.scatter(x, (y-model.forward(x, *pars.tolist()))/(equi_uncertainty), s=20)
         ax2.axhline(y=0., color='r', linestyle='-')
         ax2.legend([line5], [r"$\frac{y_i - f(x_i)}{\sqrt{(f'(x_i)\sigma_x)^2 + \sigma_y^2}}$"])
         ax2.set_ylabel("normalized equivalent residual")
@@ -110,20 +110,20 @@ def fit_and_plot(
 
     return pars, cov
 
-def montecarlo_estimator(f: Callable, xs: Sequence, sigma: Sequence, rollout: int) -> np.array:
+def montecarlo_estimator(f: Callable, xs: Sequence, sigma: Sequence, n_samples: int) -> np.array:
     """_summary_
 
     Args:
         f (Callable): takes in a sequence of np.array of the same shape and return y
         xs (Sequence): an Sequence containing input np.array
         sigma (Sequence): an Sequence containing input uncertainty np.array
-        rollout (int): how many times of random trials wanted
+        n_samples (int): how many times of random trials wanted
 
     Returns:
         std (np.array): uncertainties of each y
     """
     stats = []
-    for i in range(rollout):
+    for i in range(n_samples):
         stats.append(
             np.asarray(
                 f(*[x + np.random.normal(0, s, size = x.shape) for x, s in zip(xs, sigma)])
