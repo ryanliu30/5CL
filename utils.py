@@ -2,6 +2,7 @@ import numpy as np
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
 from collections.abc import Callable, Sequence
+from scipy import stats
 
 def fit_and_plot(
         model,
@@ -15,7 +16,7 @@ def fit_and_plot(
         ylabel: str,
         title: str,
         fitting_equation: str,
-        residual_title = None,
+        residual = True,
         save_dir = None, 
         x_logscale = False, 
         y_logscale = False,
@@ -34,7 +35,7 @@ def fit_and_plot(
         ylabel (str): name of the y axis
         title (str): the title of the plot
         fitting equation (str): the fitting equation associated with the regression
-        residual_title (str, optional): the title of the residual plot 
+        residual (bool, optional): the title of the residual plot 
         save_dir (str, optional): directory to save your plot
         x_logscale (bool, optional): use log scale for x axis. Defaults to False.
         y_logscale (bool, optional): use log scale for y axis. Defaults to False.
@@ -52,15 +53,17 @@ def fit_and_plot(
 
     print(np.transpose([pars, std_errs]))
     
-    if residual_title != None:
-        fig1, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(20, 8), dpi= 100, facecolor='w', edgecolor='k')
+    if residual:
+        fig1, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(16, 6), dpi= 300, facecolor='w', edgecolor='k')
     else:
-        fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(10, 8), dpi= 100, facecolor='w', edgecolor='k')
-    plt.rcParams.update({'font.size': '16'})
+        fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(16, 6), dpi= 300, facecolor='w', edgecolor='k')
+    plt.rcParams.update({'font.size': '12'})
     
     width = np.max(x) - np.min(x)
     pred_x = np.linspace(np.min(x) - 0.05*width, np.max(x)+0.05*width, 1000)
     pred_y = model.forward(pred_x, *pars.tolist())
+
+    KstestResult = stats.kstest((y-model.forward(x, *pars.tolist()))/(equi_uncertainty), stats.norm.cdf) 
 
     if equi_uncertainty is not None:
         Chi_squared = np.sum((model.forward(x, *pars.tolist()) - y)**2/(equi_uncertainty**2+1e-12))/(len(y)-num_par) 
@@ -77,12 +80,13 @@ def fit_and_plot(
         ax1.legend(
             [line1, line2, line3],
             ["data points", "best-fit curve", "theoretical prediction"],
-            title = "Model: " + fitting_equation + "\n" + r"$\chi^2$ per dof" + f": {Chi_squared:.2f}")
+            title = "Model: " + fitting_equation
+            )
     else:
         ax1.legend(
             [line1, line2],
             ["data points", "best-fit curve"],
-            title = "Model: " + fitting_equation + "\n" + r"$\chi^2$ per dof"+f":  {Chi_squared:.2f}"
+            title = "Model: " + fitting_equation
             )
 
     
@@ -96,15 +100,18 @@ def fit_and_plot(
     ax1.set_xlabel(xlabel)
     ax1.set_ylabel(ylabel)
 
-    if residual_title != None:
+    if residual:
+
         line5 = ax2.scatter(x, (y-model.forward(x, *pars.tolist()))/(equi_uncertainty), s=20)
         ax2.axhline(y=0., color='r', linestyle='-')
-        ax2.legend([line5], [r"$\frac{y_i - f(x_i)}{\sqrt{(f'(x_i)\sigma_x)^2 + \sigma_y^2}}$"])
-        ax2.set_ylabel("normalized equivalent residual")
-        ax2.set_title(residual_title)
-        ax2.set_xlabel(xlabel)
-        
+        ax2.legend([], [], title = 
+        r"$\chi^2$ per dof" + f": {Chi_squared:.2f}" + "\n" + "KS test p-value" + f": {KstestResult.pvalue:.2f}")
+        ax2.set_ylabel(r"$\frac{y_i - f(x_i)}{\sqrt{(f'(x_i)\sigma_{x, i})^2 + \sigma_{y, i}^2}}$")
+        ax2.set_title("Normalized Residual")
+        ax2.set_xlabel(xlabel)  
+
     plt.show()
+
     if save_dir:
         plt.savefig(save_dir)
 
