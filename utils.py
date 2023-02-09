@@ -35,7 +35,7 @@ def fit_and_plot(
         ylabel (str): name of the y axis
         title (str): the title of the plot
         fitting equation (str): the fitting equation associated with the regression
-        residual (bool, optional): the title of the residual plot 
+        residual (bool, optional): include residual plot 
         save_dir (str, optional): directory to save your plot
         x_logscale (bool, optional): use log scale for x axis. Defaults to False.
         y_logscale (bool, optional): use log scale for y axis. Defaults to False.
