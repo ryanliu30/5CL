@@ -74,20 +74,13 @@ def fit_and_plot(
     line1 = ax1.scatter(x, y, s=1)
     _ = ax1.errorbar(x, y, yerr=y_uncertainty, xerr=x_uncertainty, fmt='none')
     line2, = ax1.plot(pred_x , pred_y, color='orange', ms = 1)
-    # line4, = ax1.plot([], [], ' ')
-    if given_values != None:
-        line3, = ax1.plot(pred_x , theory_y, color='red', ms = 1)
-        ax1.legend(
-            [line1, line2, line3],
-            ["data points", "best-fit curve", "theoretical prediction"],
-            title = "Model: " + fitting_equation
-            )
-    else:
-        ax1.legend(
-            [line1, line2],
-            ["data points", "best-fit curve"],
-            title = "Model: " + fitting_equation
-            )
+    width = y.max() - y.min()
+    ax1.set_ylim([y.min() - 0.1*width, y.max()+ 0.1*width]) 
+    ax1.legend(
+        [line1, line2],
+        ["data points", "best-fit curve"],
+        title = "Model: " + fitting_equation
+        )
 
     
     if x_logscale:
