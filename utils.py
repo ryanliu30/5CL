@@ -56,7 +56,7 @@ def fit_and_plot(
     if residual:
         fig1, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(16, 6), dpi= 300, facecolor='w', edgecolor='k')
     else:
-        fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(16, 6), dpi= 300, facecolor='w', edgecolor='k')
+        fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(8, 6), dpi= 300, facecolor='w', edgecolor='k')
     plt.rcParams.update({'font.size': '12'})
     
     width = np.max(x) - np.min(x)
