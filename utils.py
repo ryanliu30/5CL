@@ -28,6 +28,7 @@ def fit_and_plot(
                        Your model's backward method should take in (x, *params) and return y'
         x (np.array): x data point
         y (np.array): y data point
+        x_uncertainty (np.array): the uncertainty associated with x
         y_uncertainty (np.array): the uncertainty associated with y
         num_par (int): the number of free parameters in your model
         given_values (list): should be either None or list of length num_par
@@ -75,7 +76,7 @@ def fit_and_plot(
     _ = ax1.errorbar(x, y, yerr=y_uncertainty, xerr=x_uncertainty, fmt='none')
     line2, = ax1.plot(pred_x , pred_y, color='orange', ms = 1)
     width = y.max() - y.min()
-    ax1.set_ylim([y.min() - 0.1*width, y.max()+ 0.1*width]) 
+    ax1.set_ylim([(y - np.absolute(y_uncertainty)).min() - 0.1*width, (y + np.absolute(y_uncertainty)).max()+ 0.1*width]) 
     ax1.legend(
         [line1, line2],
         ["data points", "best-fit curve"],
